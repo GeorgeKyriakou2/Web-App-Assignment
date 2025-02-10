@@ -1,0 +1,30 @@
+body{
+    background-color:#7F9BD4;
+}
+
+h1{
+    text-align: center;
+    border: solid black 1px;
+    color: white;
+    background-color:red;
+    width:300px;
+}
+
+#Ruleset{
+    font-size: 20px;
+    background-color: #F5F5F5;
+    width: 800px;
+    border: solid black 1px;
+}
+
+#Names{
+    background-color: white;
+    border: solid black 1px;
+    width: 350px;
+    font-size: 20px;
+}
+
+#Button {
+    background-color: cadetblue;
+    font-size: 30px;
+}
