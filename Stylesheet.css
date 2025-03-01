@@ -8,10 +8,11 @@ h1{
     color: white;
     background-color:red;
     width:300px;
+    display: table-header-group;
 }
 
 #Ruleset{
-    font-size: 20px;
+    font-size: 30px;
     background-color: #F5F5F5;
     width: 800px;
     border: solid black 1px;
@@ -26,5 +27,10 @@ h1{
 
 #Button {
     background-color: cadetblue;
+    font-size: 30px;
+}
+
+#RulesButton{
+    background-color:orange;
     font-size: 30px;
 }
