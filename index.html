@@ -31,7 +31,7 @@
                 if (data.status === "OK"){
                     let Div = document.getElementById("Quizlist");
                     Div.innerHTML = "<h2>Selectquiz: </h2>";
-                    
+
                     data.treasureHunts.forEach(quiz =>{
                         const Quizbutton = document.createElement("button");
                         Quizbutton.textContent = quiz.name;
@@ -43,6 +43,19 @@
                     });
                 }else{
                     alert("Could not find quizzes");
+                }
+            })
+    }
+    function Startquiz(QuizId){
+        const playerid = prompt("Enter your name :");
+        if (!playerid) return;
+        const appname = "TeamI_treasureHunt";
+        fetch("https://codecyprus.org/th/api/start?player=${playerid}&app=${appname}&treasure-hunt-id=${QuizId}")
+            .then(response => response.json()) //Parse JSON text to JavaScript object
+            .then(data=>{
+                if (data.status === "OK"){
+                    alert("Quiz started");
+                    window.location.href = `Quiz.html?session=${data.session};`
                 }
             })
     }
