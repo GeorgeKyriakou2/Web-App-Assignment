@@ -11,8 +11,11 @@
 <img class ='Logo' src="Resources/Treasure_Hunt_Logo.webp" alt="Treasure Logo">
 <br>
 <br>
-<input type="button" id="Button" value="Select a quiz">
+<input type="button" id="Button" onclick="getchallenges()" value="Select a quiz">
 <br>
+<div id="Quizlist">
+
+</div>
 <br>
 <input type="button" id="RulesButton" value="Rules" onclick="location.href='Rules.html'" >
 <br>
@@ -20,6 +23,29 @@
 
 <h1>Learn more about our updates by clicking the button below!</h1>
 <img class='TwitterButton' src="Resources/Twitter_logo.jpg" alt="Twitter Logo" onclick="location.href='https://x.com/Uclan_TeamI'">
-
+<script>
+    function getchallenges(){
+        fetch("https://codecyprus.org/th/api/list")
+            .then(response => response.json()) //Parse JSON text to JavaScript object
+            .then(data=>{
+                if (data.status === "OK"){
+                    let Div = document.getElementById("Quizlist");
+                    Div.innerHTML = "<h2>Selectquiz: </h2>";
+                    
+                    data.treasureHunts.forEach(quiz =>{
+                        const Quizbutton = document.createElement("button");
+                        Quizbutton.textContent = quiz.name;
+                        Quizbutton.addEventListener("click", function (){
+                            Startquiz(quiz.uuid);
+                        });
+                        Div.appendChild(Quizbutton);
+                        Div.appendChild(document.createElement("br"));
+                    });
+                }else{
+                    alert("Could not find quizzes");
+                }
+            })
+    }
+</script>
 </body>
 </html>
