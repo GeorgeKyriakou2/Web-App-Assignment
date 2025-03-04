@@ -50,12 +50,12 @@
         const playerid = prompt("Enter your name :");
         if (!playerid) return;
         const appname = "TeamI_treasureHunt";
-        fetch("https://codecyprus.org/th/api/start?player=${playerid}&app=${appname}&treasure-hunt-id=${QuizId}")
+        fetch(`https://codecyprus.org/th/api/start?player=${playerid}&app=${appname}&treasure-hunt-id=${QuizId}`)
             .then(response => response.json()) //Parse JSON text to JavaScript object
             .then(data=>{
                 if (data.status === "OK"){
                     alert("Quiz started");
-                    window.location.href = `Quiz.html?session=${data.session}';
+                    window.location.href = `Quiz.html?session=${data.session}`;
                 }
             })
     }
