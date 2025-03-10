@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Quiz</title>
+    <link rel="stylesheet" href="Stylesheet.css">
+</head>
+<body>
+
+<h1>Treasure Hunt Quiz</h1>
+<p id="QuizInfo">Loading Quiz...</p>
+
+<div id="QuestionDiv">
+
+    <h2 id="QuestionText"></h2>
+
+    <div id="AnswerOptions"></div>
+
+    <input type="text" id="AnswerInput" placeholder="Type your answer">
+    <button id="SubmitAnswer">Submit your Answer</button>
+    <button id="SkipButton">Skip Question</button>
+
+</div>
+<p id="ScoreDisplay">Score: 0</p>
+<button id="ExitButton" onclick=window.location.href="index.html">Exit Quiz</button>
+
+<script>
+    let SessionID = new URLSearchParams(window.location.search).get("session");
+
+    if (!SessionID){
+        alert("The Session ID is currently missing. Please try to start a quiz again");
+        window.location.href="index.html";
+    }else{
+        document.getElementById("QuizInfo").innerText = "Session ID: " + SessionID;
+        loadQuestion();
+    }
+
+    function loadQuestion(){
+        fetch(`https://codecyprus.org/th/api/question?session=${SessionID}`)
+            .then(response=>response.json())
+            .then(data =>{
+            if (data.status === "OK"){
+                if (data.completed){
+                    alert("Congrats! The quiz is over");
+                    window.location.href ="Leaderboard.html";
+                    return;
+                }
+                document.getElementById("QuestionDiv").style.display = "block";
+                document.getElementById("QuestionText").innerHTML = data.questionText;
+
+                let AnswerOptions = document.getElementById("AnswerOptions");
+                AnswerOptions.innerHTML ="";
+
+                if (data.questionType ==="MCQ"){
+                    ["A","B","C","D"].forEach(option =>{
+                        let button = document.createElement("button");
+                        button.textContent = option;
+                        button.onclick = () => SubmitAnswer(option);
+                        AnswerOptions.appendChild(button);
+                    });
+                }else{
+                    document.getElementById("AnswerInput").style.display = "inline";
+                    document.getElementById("SubmitAnswer").style.display = "inline";
+                }
+                document.getElementById("SkipButton").style.display = data.canBeSkipped ? "inline" : "none";
+
+
+            }
+        })
+    }
+
+    function SubmitAnswer(answer = null){
+        if (!answer){
+            answer = document.getElementById("AnswerInput").value;
+        }
+        if (!answer.trim()){
+            alert("Please enter an answer!");
+            return;
+        }
+
+        fetch(`https://codecyprus.org/th/api/answer?session=${SessionID}&answer=${encodeURIComponent(answer)}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === "OK"){
+                    alert(data.message || (data.correct ? "Correct!" : "Wrong!"));
+                    UpdateScore();
+                    loadQuestion();
+                } else {
+                    alert("Error Submitting answer, please try again");
+                }
+            })
+            .catch(error => {
+                alert("Network Error: " + error.message);
+                console.error("Error submitting answer:", error);
+            })
+    }
+
+    function SkipQuestion(){
+        fetch(`https://codecyprus.org/th/api/skip?session=${SessionID}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === "OK"){
+                    alert(data.message || "Question has been skipped");
+                    UpdateScore();
+                    loadQuestion();
+                }else{
+                    alert("This question cannot be skipped!");
+                }
+            })
+    }
+
+    function UpdateScore(){
+        fetch(`https://codecyprus.org/th/api/score?session=${SessionID}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.status ==="OK"){
+                    document.getElementById("ScoreDisplay").innerText = "Score: " + data.score;
+                }
+            })
+            .catch(error => console.error("Error:",error));
+    }
+    document.getElementById("SubmitAnswer").addEventListener("click", () => SubmitAnswer());
+    document.getElementById("SkipButton").addEventListener("click",SkipQuestion);
+</script>
+</body>
+</html>
