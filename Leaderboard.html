@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <title>Leaderboard</title>
+  <link rel="stylesheet" href="Stylesheet.css">
+</head>
+<body>
+
+<h1>Treasure Hunt Leaderboard</h1>
+<p id="leaderboardInfo">Loading leaderboard...</p>
+
+<table id="leaderboardTable" border="1">
+  <thead>
+  <tr>
+    <th>Rank</th>
+    <th>Player</th>
+    <th>Score</th>
+    <th>Completion Time</th>
+  </tr>
+  </thead>
+  <tbody></tbody>
+</table>
+
+<button id="goHome">Go to Home</button>
+
+<script>
+  let sessionId = new URLSearchParams(window.location.search).get("session");
+
+  if (!sessionId) {
+    alert("Session ID is missing. Please start a quiz first.");
+    window.location.href = "index.html";
+  } else {
+    fetchLeaderboard();
+  }
+
+  function fetchLeaderboard() {
+    fetch(`https://codecyprus.org/th/api/leaderboard?session=${sessionId}&sorted&limit=10`)
+            .then(response => response.json())
+            .then(data => {
+              if (data.status === "OK") {
+                document.getElementById("leaderboardInfo").innerText = `Treasure Hunt: ${data.treasureHuntName}`;
+
+                let tableBody = document.querySelector("#leaderboardTable tbody");
+                tableBody.innerHTML = "";
+
+                data.leaderboard.forEach((entry, index) => {
+                  let row = document.createElement("tr");
+
+                  let rankCell = document.createElement("td");
+                  rankCell.innerText = index + 1;
+                  row.appendChild(rankCell);
+
+                  let playerCell = document.createElement("td");
+                  playerCell.innerText = entry.player;
+                  row.appendChild(playerCell);
+
+                  let scoreCell = document.createElement("td");
+                  scoreCell.innerText = entry.score;
+                  row.appendChild(scoreCell);
+
+                  let timeCell = document.createElement("td");
+                  timeCell.innerText = entry.completionTime ? new Date(entry.completionTime).toLocaleString() : "In Progress";
+                  row.appendChild(timeCell);
+
+                  tableBody.appendChild(row);
+                });
+              } else {
+                alert("Error fetching leaderboard: " + data.errorMessages.join(", "));
+              }
+            })
+            .catch(error => console.error("Error:", error));
+  }
+
+  document.getElementById("goHome").addEventListener("click", () => {
+    window.location.href = "index.html";
+  });
+</script>
+
+</body>
+</html>
