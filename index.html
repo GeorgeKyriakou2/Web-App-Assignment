@@ -1,73 +1,75 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta charset="UTF-8">
-    <title>Home Page</title>
-    <link rel="stylesheet" href="Stylesheet.css">
-</head>
-<body>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta charset="UTF-8">
+        <title>Home Page</title>
+        <link rel="stylesheet" href="Stylesheet.css">
+    </head>
 
-<img class ='Logo' src="Resources/Treasure_Hunt_Logo.webp" alt="Treasure Logo">
-<br>
-<br>
-<input type="button" id="Button" onclick="getchallenges()" value="Select a quiz">
-<br>
-<div id="Quizlist">
+    <body>
+        <img class ='Logo' src="Resources/Treasure_Hunt_Logo.webp" alt="Treasure Logo">
+        <br>
+        <br>
+        <input type="button" id="Button" onclick="getchallenges()" value="Select a quiz">
+        <br>
+        <div id="Quizlist">
 
-</div>
-<br>
-<input type="button" id="RulesButton" value="Rules" onclick="location.href='Rules.html'" >
-<br>
-<br>
+        </div>
+        <br>
+        <input type="button" id="RulesButton" value="Rules" onclick="location.href='Rules.html'" >
+        <br>
+        <br>
+        <h1>Learn more about our updates by clicking the buttons below!</h1>
+        <div style="display:flex; flex-direction: row; justify-content: center; align-items: center">
+            <img class='TwitterButton' src="Resources/Facebook.jfif" alt="Twitter Logo" onclick="location.href='https://www.facebook.com/profile.php?id=61574140330224'">
+            <img class='TwitterButton' src="Resources/Twitter_logo.jpg" alt="Twitter Logo" onclick="location.href='https://x.com/Uclan_TeamI'">
+        </div>
 
-<h1>Learn more about our updates by clicking the button below!</h1>
-<img class='TwitterButton' src="Resources/Facebook.jfif" alt="Twitter Logo" onclick="location.href='https://www.facebook.com/profile.php?id=61574140330224'">
-<img class='TwitterButton' src="Resources/Twitter_logo.jpg" alt="Twitter Logo" onclick="location.href='https://x.com/Uclan_TeamI'">
-<script>
-    function getchallenges(){
-        fetch("https://codecyprus.org/th/api/list")
-            .then(response => response.json()) //Parse JSON text to JavaScript object
-            .then(data=>{
-                if (data.status === "OK"){
-                    let Div = document.getElementById("Quizlist");
-                    Div.innerHTML = "<h2>Selectquiz: </h2>";
+        <script>
+            function getchallenges(){
+                fetch("https://codecyprus.org/th/api/list")
+                    .then(response => response.json()) //Parse JSON text to JavaScript object
+                    .then(data=>{
+                                    if (data.status === "OK"){
+                                        let Div = document.getElementById("Quizlist");
+                                        Div.innerHTML = "<h2>Selectquiz: </h2>";
 
-                    data.treasureHunts.forEach(quiz =>{
-                        const Quizbutton = document.createElement("button");
-                        Quizbutton.textContent = quiz.name;
-                        Quizbutton.addEventListener("click", function (){
-                            Startquiz(quiz.uuid);
-                        });
-                        Div.appendChild(Quizbutton);
-                        Div.appendChild(document.createElement("br"));
-                    });
-                }else{
-                    alert("Could not find quizzes");
-                }
-            })
-    }
-    function Startquiz(QuizId){
-        const playerid = prompt("Enter your name :");
-        if (!playerid) return;
-        const appname = "TeamI_treasureHunt";
-        fetch(`https://codecyprus.org/th/api/start?player=${playerid}&app=${appname}&treasure-hunt-id=${QuizId}`)
-            .then(response => response.json()) //Parse JSON text to JavaScript object
-            .then(data=>{
-                if (data.status === "OK"){
-                    alert("Quiz started");
-                    window.location.href = `Quiz.html?session=${data.session}`;
-                }
-            })
-    }
-    <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-P780LQ1W0J"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-P780LQ1W0J');
-</script>
-</body>
+                                        data.treasureHunts.forEach(quiz =>{
+                                            const Quizbutton = document.createElement("button");
+                                            Quizbutton.textContent = quiz.name;
+                                            Quizbutton.addEventListener("click", function (){
+                                            Startquiz(quiz.uuid);
+                                        });
+                                        
+                                        Div.appendChild(Quizbutton);
+                                        Div.appendChild(document.createElement("br"));
+                                    });
+                                    }
+                                    else{alert("Could not find quizzes");}
+                                })
+            }
+            
+            function Startquiz(QuizId){
+                const playerid = prompt("Enter your name :");
+                if (!playerid) return;
+                    const appname = "TeamI_treasureHunt";
+                    fetch(`https://codecyprus.org/th/api/start?player=${playerid}&app=${appname}&treasure-hunt-id=${QuizId}`)
+                    .then(response => response.json()) //Parse JSON text to JavaScript object
+                    .then(data=>{
+                                    if (data.status === "OK"){
+                                        alert("Quiz started");
+                                        window.location.href = `Quiz.html?session=${data.session}`;
+                                    }
+                                })
+            }
+            <!-- Google tag (gtag.js) -->
+            <script async src="https://www.googletagmanager.com/gtag/js?id=G-P780LQ1W0J"></script>
+            <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+                gtag('config', 'G-P780LQ1W0J');
+            </script>
+    </body>
 </html>
