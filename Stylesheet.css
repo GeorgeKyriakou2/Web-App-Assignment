@@ -51,6 +51,10 @@ h1{
     width: 55%;
 }
 
+div.Quizlist{
+    background-color: white;
+    border: solid 2px black;
+}
 div.NotesDiv{
     background-color: white;
     border: solid black 3px;
