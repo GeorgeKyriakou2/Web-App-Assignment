@@ -51,7 +51,7 @@ h1{
     width: 55%;
 }
 
-div.Quizlist{
+#Quizlist{
     background-color: white;
     border: solid 2px black;
 }
