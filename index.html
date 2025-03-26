@@ -17,15 +17,19 @@
     </head>
 
     <body>
+        <!--Display a logo of our quiz which was created by AI after receiving permission from the teacher through an email-->
         <img class ='Logo' src="Resources/Treasure_Hunt_Logo.webp" alt="Treasure Logo">
         <br>
         <br>
+        <!--A button that if pressed will display the list of quizes to the user-->
         <input type="button" id="Button" onclick="getchallenges()" value="Select a quiz">
         <br>
+        <!--A empty div which will be filled in with various quizzes once the button above has been pressed-->
         <div id="Quizlist">
 
         </div>
         <br>
+        <!--Some buttons that allow the user to access our other pages such as the rules and Teamwork page-->
         <input type="button" id="RulesButton" value="Rules" onclick="location.href='Rules.html'" >
         <br>
         <br>
@@ -33,13 +37,17 @@
         <br>
         <br>
         <h1>Learn more about our updates by clicking the buttons below!</h1>
-        
+        <!--Displayal of two marketing logos(Twitter and Facebook) which if clicked on will transport the user to the respective marketing website-->
         <div style="display:flex; flex-direction: row; justify-content: center; align-items: center">
             <img class='TwitterButton' src="Resources/Facebook.jfif" alt="Twitter Logo" onclick="location.href='https://www.facebook.com/profile.php?id=61574140330224'">
             <img class='TwitterButton' src="Resources/Twitter_logo.jpg" alt="Twitter Logo" onclick="location.href='https://x.com/Uclan_TeamI'">
         </div>
 
         <script>
+            //The function that is called when the button called select a quiz is clicked
+            //Calls the list api to receive a list of currently active quizzes
+            //Each entry of a quiz is created as a button which will be appended to the empty quiz list that was mentioned earlier
+            //Each button also has an on click listener with the start api function
             function getchallenges(){
                 fetch("https://codecyprus.org/th/api/list")
                     .then(response => response.json()) //Parse JSON text to JavaScript object
@@ -64,7 +72,11 @@
                                     else{alert("Could not find quizzes");}
                                 })
                             }
-            
+            //The function that will be called when one of the quiz buttons are pressed
+            //First takes the respected quiz's Id to be used as one of the parameters
+            //Requests an input for the user which will be used as the player id
+            //The third parameter is provided prematurely by the program as it does not need to be adjusted
+            //If all 3 parameters are valid then the user will be transported to the quiz page in order to participate in the quiz
             function Startquiz(QuizId){
                 const playerid = prompt("Enter your name :");
                 if (!playerid) return;
