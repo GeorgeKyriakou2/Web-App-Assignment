@@ -9,8 +9,9 @@
 <body>
 
 <h1>Treasure Hunt Leaderboard</h1>
+  <!--A display that will receive the name of the quiz that the user had just completed-->
 <p id="leaderboardInfo">Loading leaderboard...</p>
-
+<!--Creation of the table with 4 sections that will be filled in using the leaderboard api-->
 <table id="leaderboardTable" border="1">
   <thead>
   <tr>
@@ -22,7 +23,7 @@
   </thead>
   <tbody></tbody>
 </table>
-
+<!--A Button that allows the user to go back to the home page-->
 <button id="goHome">Go to Home</button>
 
 <script>
@@ -34,7 +35,10 @@
   } else {
     fetchLeaderboard();
   }
-
+//The function responsible for receiving the leaderboard of the quiz that the user had just participated in
+//Once the data is confirmed it will start feeling out one entry at a time with a maximum of 10 as provided as the limit variable during the fetch of the leaderboard api
+//The leaderboard is also sorted by the highest score instead of the lowest
+//After creating an entry the row will be appended appropriatly side by side in order to create a neat and tidy leaderboard of the 10 highest scores
   function fetchLeaderboard() {
     fetch(`https://codecyprus.org/th/api/leaderboard?session=${sessionId}&sorted&limit=10`)
             .then(response => response.json())
@@ -72,7 +76,7 @@
             })
             .catch(error => console.error("Error:", error));
   }
-
+//Added an on click function to the button which will send the user back to the home page
   document.getElementById("goHome").addEventListener("click", () => {
     window.location.href = "index.html";
   });
