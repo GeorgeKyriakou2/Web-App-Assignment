@@ -51,6 +51,8 @@
                                         data.treasureHunts.forEach(quiz =>{
                                             const Quizbutton = document.createElement("button");
                                             Quizbutton.textContent = quiz.name;
+                                            Quizbutton.style.background = "aquamarine";
+                                            Quizbutton.style.marginBottom = "20px";
                                             Quizbutton.addEventListener("click", function (){
                                             Startquiz(quiz.uuid);
                                         });
