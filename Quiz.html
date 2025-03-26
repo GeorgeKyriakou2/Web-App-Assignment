@@ -10,19 +10,22 @@
 
 <h1>Treasure Hunt Quiz</h1>
 
-
+<!--A div which will contain all the data received for the use of the quiz -->
 <div id="QuestionDiv">
-
+<!-- A h2 element which stores the specific question that the user is provided with through the question api-->
     <h2 id="QuestionText"></h2>
-
+<!-- A div which houses the ways that the user can answer the question for example it will store the multiple choice button or as shown below a button which can insert a direct answer-->
     <div id="AnswerOptions"></div>
 
     <input type="text" id="AnswerInput" placeholder="Type your answer">
+    <!--Buttons that allow the user to submit their answer and skip the question-->
     <button id="SubmitAnswer">Submit your Answer</button>
     <button id="SkipButton">Skip Question</button>
     
 </div>
+    <!--A small display of the score which is automatically increased or decreased based on if the user has answered correctly/incorrectly or skiped the question-->
 <p id="ScoreDisplay">Score: 0</p>
+    <!--Some buttons that allow the user to scan a qr code or exit back to the home page-->
 <button id="QrButton" onclick=window.location.href='Qr_Scanner.html'>Scan QR Code?</button>
 <button id="ExitButton" onclick=window.location.href="index.html">Exit Quiz</button>
 
@@ -35,7 +38,9 @@
     }else{
         loadQuestion();
     }
-
+//A function which loads the question using question api which is provided the session id variable
+//This function is called by multiple other functions such as the answer function if the user has answered correctly or the skip function if the user had decided to skip the question
+//If the function detects that they are no questions left to be answered the user will be redirected to the leaderboard page    
     function loadQuestion(){
         fetch(`https://codecyprus.org/th/api/question?session=${SessionID}`)
             .then(response=>response.json())
@@ -69,7 +74,9 @@
             }
         })
     }
-
+//The function that is called when the user clicks on one of the multiple choice buttons or enters a direct answer
+//The function will call the question api if the input is correct in order to load the next question
+//No matter whether the answer is correct or wrong the function will always call the score api to update the score appropriately
     function SubmitAnswer(answer = null){
         if (!answer){
             answer = document.getElementById("AnswerInput").value;
@@ -95,7 +102,8 @@
                 console.error("Error submitting answer:", error);
             })
     }
-
+//A function which allows the user to skip the current question in the case that they dont possess the answer
+//The function will proceed to call the question function and decrease the score by 10 points due to the skip
     function SkipQuestion(){
         fetch(`https://codecyprus.org/th/api/skip?session=${SessionID}`)
             .then(response => response.json())
@@ -109,7 +117,7 @@
                 }
             })
     }
-
+//The function that is called throughout the quiz to modify the value of the score variable and assign the value to the display which is located in the html
     function UpdateScore(){
         fetch(`https://codecyprus.org/th/api/score?session=${SessionID}`)
             .then(response => response.json())
@@ -120,6 +128,7 @@
             })
             .catch(error => console.error("Error:",error));
     }
+    //Added event listeners to the sumbit and skip buttons to their respective function calls
     document.getElementById("SubmitAnswer").addEventListener("click", () => SubmitAnswer());
     document.getElementById("SkipButton").addEventListener("click",SkipQuestion);
 </script>
