@@ -9,7 +9,7 @@
 <body>
 
 <h1>Treasure Hunt Quiz</h1>
-<p id="QuizInfo">Loading Quiz...</p>
+
 
 <div id="QuestionDiv">
 
@@ -33,7 +33,6 @@
         alert("The Session ID is currently missing. Please try to start a quiz again");
         window.location.href="index.html";
     }else{
-        document.getElementById("QuizInfo").innerText = "Session ID: " + SessionID;
         loadQuestion();
     }
 
